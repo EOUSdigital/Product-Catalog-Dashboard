@@ -1,0 +1,95 @@
+// 🚀 Product Catalog Dashboard
+
+//* 🎯 Project Overview:
+//  We are developing a Product Catalog Dashboard for a fictional e-commerce platform.
+//  This dashboard will allow us to:
+//  • Manage products.
+//  • Filter and search dynamically.
+//  • Highlight premium items.
+//  • Merge system configurations.
+//  • Generate clean reports — all using pure JavaScript (arrays, objects, spread, chaining, etc.).
+
+//* 🛒 Products Array
+
+const products = [
+    { name: 'Laptop Pro', price: 1500, category: 'Electronics', inStock: true, brand: 'NovaTech' },
+    { name: 'Smartphone X', price: 900, category: 'Electronics', inStock: false, brand: 'TechEdge' },
+    { name: 'Office Chair', price: 200, category: 'Furniture', inStock: true, brand: 'ComfortLine' },
+    { name: '4K Monitor', price: 700, category: 'Electronics', inStock: true, brand: 'DisplayWorks' },
+    { name: 'Wireless Headphones', price: 250, category: 'Accessories', inStock: true, brand: 'AudioMax' },
+    { name: 'Gaming Desktop', price: 2200, category: 'Electronics', inStock: true, brand: 'NovaTech' },
+    { name: 'Standing Desk', price: 500, category: 'Furniture', inStock: false, brand: 'ErgoFlex' },
+];
+
+//* ⚙️ Configurations
+
+const defaultConfig3 = { currency: 'USD', showOutOfStock: false, theme: 'light' };
+const userConfig3 = { currency: 'EUR', theme: 'dark' };
+const envMode3 = 'production';
+
+//* 🚀 Tasks:
+
+//? 1️⃣ Merge Configurations
+//  • Use ...spread to merge defaultConfig and userConfig.
+//  • Add mode: envMode.
+//  • Log the final config.
+
+//? 2️⃣ Filter Products
+//  • Only show products:
+//      • That are in stock (respecting showOutOfStock setting).
+//      • That cost >= 500.
+//  • Use .filter().
+
+//? 3️⃣ Format Product List
+//  • Use .map() to format like:
+//      - "Laptop Pro - €1500 [Electronics] by NovaTech"
+//! (Hint: Use config.currency to decide € or $)
+
+//? 4️⃣ Highlight Premium Products
+//  • Count products where price > 1000 using .filter() or .some().
+//  • Log:
+//      - "🔥 2 premium products available!"
+
+//? 5️⃣ Handle No Results
+//  • If no products match filters ➔ log:
+//      - "❌ No products available in this category."
+
+//! Solution
+
+//* Step 1.
+
+const mergedConfig3 = { ...defaultConfig3, ...userConfig3 };
+const finalConfig3 = { ...mergedConfig3, mode: envMode3 };
+console.log(finalConfig3);
+
+//* Step 2.
+
+const showOutOfStock = products.filter(product => product.price >= 500);
+
+const availableProducts = products.filter(product => {
+    return finalConfig3.showOutOfStock 
+        ? product.price >= 500 
+        : product.inStock && product.price >= 500;
+});
+
+//* Step 3.
+
+const currencySymbol = finalConfig3.currency === 'EUR' ? '€' : '$';
+const formatProductList = availableProducts.map(product => `${product.name} - ${currencySymbol}${product.price} [${product.category}] by ${product.brand}`);
+
+//* Step 4.
+
+const premiumProducts = availableProducts.filter(product => product.price > 1000).length;
+
+//* Step 5.
+
+console.log(`⚙️ Config: ${JSON.stringify(finalConfig3)}`);
+
+console.log('🛒 Available Products:');
+console.log(formatProductList);
+
+if (premiumProducts) {
+    console.log(`🔥 ${premiumProducts} premium products available!`);
+} else {
+    console.log('❌ No products available in this category.');
+};
